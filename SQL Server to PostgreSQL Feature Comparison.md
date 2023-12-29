@@ -21,6 +21,8 @@ Here is a growing list of various features between SQL Server and PostgreSQL.
 | Max Varchar Length | `Varchar(Max)` | `Varchar(10485760)` | Use `text` for longer strings in PostgreSQL |
 | Scheduler | SQL Server Agent | pgAgent | |
 
+---------------------------
+
 Here are data type conversions.
 
 **Text**
@@ -69,3 +71,20 @@ Here are data type conversions.
 | VARBINARY(max) | BYTEA | Variable length byte string, <= 2GB |
 | ROWVERSION | BYTEA | Automatically updated binary data |
 | IMAGE | BYTEA | Variable length binary data, <= 2GB |
+
+---------------------------
+
+Below is a list of common functions that differ in syntax between SQL Server and PostgreSQL.
+
+| Function/Operator | Microsoft SQL Server | PostgreSQL |
+| ----------------- | -------------------- | ---------- |
+| Extract Part of a Date | DATEPART | DATE_PART |
+| Check Null Value | ISNULL | COALESCE |
+| Concatenate Spaces | SPACE | REPEAT |
+| Add Dates | DATEADD | + |
+| String Concatenation | + or CONCAT | Double Pipes or CONCAT |
+| Find Position of Character in a String | CHARINDEX | POSITION |
+| Get Current Date/Time | GETDATE | NOW |
+| Replace Strings | REPLACE | OVERLAY |
+| Get String Length | LEN | OCTET_LENGTH |
+| AutoIncrement Data Type | INT IDENTITY | SERIAL |
