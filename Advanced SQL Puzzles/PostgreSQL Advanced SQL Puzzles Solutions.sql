@@ -2,8 +2,8 @@
 Scott Peters
 Solutions for Advanced SQL Puzzles
 https://advancedsqlpuzzles.com
-Last Updated: 12/18/2023
-Microsoft SQL Server T-SQL
+Last Updated: 12/30/2023
+PostgreSQL pl/pgsql
 
 */----------------------------------------------------
 
@@ -15,21 +15,26 @@ Shopping Carts
 DROP TABLE IF EXISTS Cart1;
 DROP TABLE IF EXISTS Cart2;
 
+
 CREATE TEMPORARY TABLE Cart1
 (
 Item  VARCHAR(100) PRIMARY KEY
 );
+
 
 CREATE TEMPORARY TABLE Cart2
 (
 Item  VARCHAR(100) PRIMARY KEY
 );
 
+
 INSERT INTO Cart1 (Item) VALUES
 ('Sugar'),('Bread'),('Juice'),('Soda'),('Flour');
 
+
 INSERT INTO Cart2 (Item) VALUES
 ('Sugar'),('Bread'),('Butter'),('Cheese'),('Fruit');
+
 
 --Solution 1
 --FULL OUTER JOIN
@@ -37,6 +42,7 @@ SELECT  a.Item AS ItemCart1,
         b.Item AS ItemCart2
 FROM    Cart1 a FULL OUTER JOIN
         Cart2 b ON a.Item = b.Item;
+
 
 --Solution 2
 --LEFT JOIN, UNION and RIGHT JOIN
@@ -68,12 +74,14 @@ FROM    Cart2 b
 WHERE b.Item NOT IN (SELECT a.Item FROM Cart1 a)
 ORDER BY 1,2;
 
+
 /*----------------------------------------------------
 Answer to Puzzle #2
 Managers and Employees
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS Employees;
+
 
 CREATE TEMPORARY TABLE Employees
 (
@@ -82,10 +90,12 @@ ManagerID   INTEGER NULL,
 JobTitle    VARCHAR(100) NOT NULL
 );
 
+
 INSERT INTO Employees (EmployeeID, ManagerID, JobTitle) VALUES
 (1001,NULL,'President'),(2002,1001,'Director'),
 (3003,1001,'Office Manager'),(4004,2002,'Engineer'),
 (5005,2002,'Engineer'),(6006,2002,'Engineer');
+
 
 --Recursion
 WITH RECURSIVE cte_Recursion AS 
@@ -108,6 +118,7 @@ Fiscal Year Table Constraints
 
 DROP TABLE IF EXISTS EmployeePayRecords;
 
+
 CREATE TEMPORARY TABLE EmployeePayRecords
 (
 EmployeeID  INTEGER,
@@ -116,6 +127,7 @@ StartDate   DATE,
 EndDate     DATE,
 PayRate     MONEY
 );
+
 
 --NOT NULL
 ALTER TABLE EmployeePayRecords ALTER COLUMN EmployeeID SET NOT NULL;
@@ -143,12 +155,14 @@ CHECK (EXTRACT(DAY FROM EndDate) = 31);
 ALTER TABLE EmployeePayRecords ADD CONSTRAINT Check_Payrate
 CHECK (PayRate > CAST(0 AS MONEY));
 
+
 /*----------------------------------------------------
 Answer to Puzzle #4
 Two Predicates
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS Orders;
+
 
 CREATE TEMPORARY TABLE Orders
 (
@@ -159,10 +173,12 @@ Amount         MONEY NOT NULL,
 PRIMARY KEY (CustomerID, OrderID)
 );
 
+
 INSERT INTO Orders (CustomerID, OrderID, DeliveryState, Amount) VALUES
 (1001,1,'CA',340),(1001,2,'TX',950),(1001,3,'TX',670),
 (1001,4,'TX',860),(2002,5,'WA',320),(3003,6,'CA',650),
 (3003,7,'CA',830),(4004,8,'TX',120);
+
 
 --Solution 1
 --INNER JOIN
@@ -176,6 +192,7 @@ SELECT  b.CustomerID, b.OrderID, b.DeliveryState, b.Amount
 FROM    cte_CA a INNER JOIN
         Orders b ON a.CustomerID = B.CustomerID
 WHERE   b.DeliveryState = 'TX';
+
 
 --Solution 2
 --IN
@@ -193,12 +210,14 @@ FROM    Orders
 WHERE   DeliveryState = 'TX' AND
         CustomerID IN (SELECT b.CustomerID FROM cte_CA b);
 
+
 /*----------------------------------------------------
 Answer to Puzzle #5
 Phone Directory
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS PhoneDirectory;
+
 
 CREATE TEMPORARY TABLE PhoneDirectory
 (
@@ -208,6 +227,7 @@ PhoneNumber  VARCHAR(12) NOT NULL,
 PRIMARY KEY (CustomerID, "Type")
 );
 
+
 INSERT INTO PhoneDirectory (CustomerID, "Type", PhoneNumber) VALUES
 (1001,'Cellular','555-897-5421'),
 (1001,'Work','555-897-6542'),
@@ -215,6 +235,7 @@ INSERT INTO PhoneDirectory (CustomerID, "Type", PhoneNumber) VALUES
 (2002,'Cellular','555-963-6544'),
 (2002,'Work','555-812-9856'),
 (3003,'Cellular','555-987-6541');
+
 
 --Solution 1
 --MAX and CASE
@@ -230,6 +251,7 @@ GROUP BY CustomerID;
 --SELECT  CustomerID,Cellular,Work,Home
 --FROM    PhoneDirectory PIVOT
 --       (MAX(PhoneNumber) FOR Type IN (Cellular,Work,Home)) AS PivotClause;
+
 
 --Solution 3
 --OUTER JOIN
@@ -299,6 +321,7 @@ Workflow Steps
 
 DROP TABLE IF EXISTS WorkflowSteps;
 
+
 CREATE TEMPORARY TABLE WorkflowSteps
 (
 Workflow        VARCHAR(100),
@@ -307,10 +330,12 @@ CompletionDate  DATE NULL,
 PRIMARY KEY (Workflow, StepNumber)
 );
 
+
 INSERT INTO WorkflowSteps (Workflow, StepNumber, CompletionDate) VALUES
 ('Alpha',1,'7/2/2018'),('Alpha',2,'7/2/2018'),('Alpha',3,'7/1/2018'),
 ('Bravo',1,'6/25/2018'),('Bravo',2,NULL),('Bravo',3,'6/27/2018'),
 ('Charlie',1,NULL),('Charlie',2,'7/1/2018');
+
 
 --Solution 1
 --NULL operators
@@ -331,6 +356,7 @@ SELECT  Workflow
 FROM    cte_NotNull
 WHERE   Workflow IN (SELECT Workflow FROM cte_Null);
 
+
 --Solution 2
 --HAVING clause and COUNT functions
 SELECT  Workflow
@@ -338,12 +364,14 @@ FROM    WorkflowSteps
 GROUP BY Workflow
 HAVING  COUNT(*) <> COUNT(CompletionDate);
 
+
 --Solution 3
 --HAVING clause with MAX function
 SELECT  Workflow
 FROM    WorkflowSteps
 GROUP BY Workflow
 HAVING  MAX(CASE WHEN CompletionDate IS NULL THEN 1 ELSE 0 END) = 1;
+
 
 /*----------------------------------------------------
 Answer to Puzzle #7
@@ -353,6 +381,7 @@ Mission to Mars
 DROP TABLE IF EXISTS Candidates;
 DROP TABLE IF EXISTS Requirements;
 
+
 CREATE TEMPORARY TABLE Candidates
 (
 CandidateID  INTEGER,
@@ -360,18 +389,22 @@ Occupation   VARCHAR(100),
 PRIMARY KEY (CandidateID, Occupation)
 );
 
+
 INSERT INTO Candidates (CandidateID, Occupation) VALUES
 (1001,'Geologist'),(1001,'Astrogator'),(1001,'Biochemist'),
 (1001,'Technician'),(2002,'Surgeon'),(2002,'Machinist'),
 (3003,'Cryologist'),(4004,'Selenologist');
+
 
 CREATE TEMPORARY TABLE Requirements
 (
 Requirement  VARCHAR(100) PRIMARY KEY
 );
 
+
 INSERT INTO Requirements (Requirement) VALUES
 ('Geologist'),('Astrogator'),('Technician');
+
 
 SELECT  CandidateID
 FROM    Candidates
@@ -379,12 +412,14 @@ WHERE   Occupation IN (SELECT Requirement FROM Requirements)
 GROUP BY CandidateID
 HAVING COUNT(*) = (SELECT COUNT(*) FROM Requirements);
 
+
 /*----------------------------------------------------
 Answer to Puzzle #8
 Workflow Cases
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS WorkflowCases;
+
 
 CREATE TEMPORARY TABLE WorkflowCases
 (
@@ -394,14 +429,17 @@ Case2     INTEGER NOT NULL DEFAULT 0,
 Case3     INTEGER NOT NULL DEFAULT 0
 );
 
+
 INSERT INTO WorkflowCases (Workflow, Case1, Case2, Case3) VALUES
 ('Alpha',0,0,0),('Bravo',0,1,1),('Charlie',1,0,0),('Delta',0,0,0);
+
 
 --Solution 1
 --Add each column
 SELECT  Workflow,
         Case1 + Case2 + Case3 AS PassFail
 FROM    WorkflowCases;
+
 
 --Solution 2 (UNPIVOT is not a supported PostgreSQL operator)
 --UNPIVOT operator
@@ -419,12 +457,14 @@ FROM    WorkflowCases;
 --GROUP BY Workflow
 --ORDER BY 1;
 
+
 /*----------------------------------------------------
 Answer to Puzzle #9
 Matching Sets
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS Employees;
+
 
 CREATE TEMPORARY TABLE Employees
 (
@@ -433,12 +473,14 @@ License     VARCHAR(100),
 PRIMARY KEY (EmployeeID, License)
 );
 
+
 INSERT INTO Employees (EmployeeID, License) VALUES
 (1001,'Class A'),(1001,'Class B'),(1001,'Class C'),
 (2002,'Class A'),(2002,'Class B'),(2002,'Class C'),
 (3003,'Class A'),(3003,'Class D'),
 (4004,'Class A'),(4004,'Class B'),(4004,'Class D'),
 (5005,'Class A'),(5005,'Class B'),(5005,'Class D');
+
 
 WITH cte_Count AS
 (
@@ -464,12 +506,14 @@ FROM    cte_CountWindow a INNER JOIN
         cte_Count b ON a.CountWindow = b.LicenseCount AND a.EmployeeID_A = b.EmployeeID INNER JOIN
         cte_Count c ON a.CountWindow = c.LicenseCount AND a.EmployeeID_B = c.EmployeeID;
 
+
 /*----------------------------------------------------
 Answer to Puzzle #10
 Mean, Median, Mode, and Range
 */----------------------------------------------------
 
 DROP TABLE IF EXISTS SampleData;
+
 
 CREATE TEMPORARY TABLE SampleData
 (
@@ -499,10 +543,12 @@ SELECT
 FROM OrderedValues
 LIMIT 1;
 
+
 --Mean and Range
 SELECT  AVG(IntegerValue) AS Mean,
         MAX(IntegerValue) - MIN(IntegerValue) AS Range
 FROM    SampleData;
+
 
 --Mode
 SELECT  IntegerValue AS Mode,
@@ -511,6 +557,7 @@ FROM    SampleData
 GROUP BY IntegerValue
 ORDER BY ModeCount DESC
 LIMIT 1;
+
 
 /*----------------------------------------------------
 Answer to Puzzle #11
@@ -658,7 +705,7 @@ SELECT  a.Workflow,
              WHEN b.ErrorState = 'Error' THEN 'Indeterminate'
              WHEN b.RunningState = 'Running' THEN b.RunningState END AS RunStatus
 FROM    cte_MinMax a LEFT OUTER JOIN
-        cte_Error b on a.WorkFlow = b.WorkFlow
+        cte_Error b ON a.WorkFlow = b.WorkFlow
 ORDER BY 1;
 
 
@@ -1043,7 +1090,7 @@ GROUP BY ProductID
 )
 SELECT  a.*
 FROM    ValidPrices a INNER JOIN
-        cte_MaxEffectiveDate b on a.EffectiveDate = b.MaxEffectiveDate AND a.ProductID = b.ProductID;
+        cte_MaxEffectiveDate b ON a.EffectiveDate = b.MaxEffectiveDate AND a.ProductID = b.ProductID;
 
 
 /*----------------------------------------------------
@@ -1179,7 +1226,7 @@ INSERT INTO PlayerScores (PlayerID, Score) VALUES
 (5005,6832);
 
 
-SELECT  NTILE(2) OVER (ORDER BY Score DESC) as Quartile,
+SELECT  NTILE(2) OVER (ORDER BY Score DESC) AS Quartile,
         PlayerID,
         Score
 FROM    PlayerScores a
@@ -1725,61 +1772,86 @@ Answer to Puzzle #33
 Deadlines
 */----------------------------------------------------
 
-/*----------------------------------------------------
-Answer to Puzzle #33
-Deadlines
-*/----------------------------------------------------
-
-DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS ManufacturingTimes;
+DROP TABLE IF EXISTS Orders;
+
+
+CREATE TEMPORARY TABLE ManufacturingTimes
+(
+PartID             VARCHAR(100),
+Product            VARCHAR(100),
+DaysToManufacture  INTEGER NOT NULL,
+PRIMARY KEY (PartID, Product)
+);
 
 CREATE TEMPORARY TABLE Orders
 (
 OrderID        INTEGER PRIMARY KEY,
-Product        VARCHAR(100) NOT NULL,
+Product        VARCHAR(100) NOT NULL /*REFERENCES ManufacturingTimes (Product)*/, --ERROR:  there is no unique constraint matching given keys for referenced table "manufacturingtimes" 
 DaysToDeliver  INTEGER NOT NULL
 );
 
-CREATE TEMPORARY TABLE ManufacturingTimes
-(
-Product            VARCHAR(100),
-Component          VARCHAR(100),
-DaysToManufacture  INTEGER NOT NULL,
-PRIMARY KEY (Product, Component)
-);
+
+INSERT INTO ManufacturingTimes (PartID, Product, DaysToManufacture) VALUES
+('AA-111','Widget',7),
+('BB-222','Widget',2),
+('CC-333','Widget',3),
+('DD-444','Widget',1),
+('AA-111','Gizmo',7),
+('BB-222','Gizmo',2),
+('AA-111','Doodad',7),
+('DD-444','Doodad',1);
 
 
 INSERT INTO Orders (OrderID, Product, DaysToDeliver) VALUES
-(1, 'Aurora', 7),
-(2, 'Twilight', 3),
-(3, 'SunRay', 9);
+(1,'Widget',7),
+(2,'Gizmo',3),
+(3,'Doodad',9);
 
-INSERT INTO ManufacturingTimes (Product, Component, DaysToManufacture) VALUES
-('Aurora', 'Photon Coil', 7),
-('Aurora', 'Filament', 2),
-('Aurora', 'Shine Capacitor', 3),
-('Aurora', 'Glow Sphere', 1),
-('Twilight', 'Photon Coil', 7),
-('Twilight', 'Filament', 2),
-('SunRay', 'Shine Capacitor', 3),
-('SunRay', 'Photon Coil', 1);
 
+--Solution 1
+--MAX with INNER JOIN
 WITH cte_Max AS
 (
 SELECT  Product,
-        MAX(DaysToManufacture) AS DaysToBuild
+        MAX(DaysToManufacture) AS MaxDaysToManufacture
 FROM    ManufacturingTimes b
 GROUP BY Product
 )
 SELECT  a.OrderID,
-        a.Product,
-        b.DaystoBuild,
-        a.DaysToDeliver,
-        CASE WHEN b.DaystoBuild = DaystoDeliver THEN 'On Schedule'
-             WHEN b.DaystoBuild < DaystoDeliver THEN 'Ahead of Schedule'
-             WHEN b.DaystoBuild > DaystoDeliver THEN 'Behind Schedule' END AS Schedule
+        a.Product
 FROM    Orders a INNER JOIN
-        cte_Max b ON a.Product = b.Product;
+        cte_Max b ON a.Product = b.Product AND a.DaysToDeliver >= b.MaxDaysToManufacture;
+
+
+--Solution 2
+--MAX with correlated subquery
+WITH cte_Max AS
+(
+SELECT  Product, MAX(DaysToManufacture) AS MaxDaysToManufacture
+FROM    ManufacturingTimes b
+GROUP BY Product
+)
+SELECT  OrderID,
+        Product
+FROM    Orders a
+WHERE   EXISTS (SELECT  1
+                FROM    cte_Max b 
+                WHERE   a.Product = b.Product AND
+                        a.DaysToDeliver >= b.MaxDaysToManufacture);
+
+
+--Solution 3
+--ALL
+SELECT  OrderID,
+        Product
+FROM    Orders a
+WHERE   DaysToDeliver >= ALL(SELECT  DaysToManufacture 
+                              FROM    ManufacturingTimes b 
+                              WHERE   a.Product = b.Product);
+
+
+
 
 /*----------------------------------------------------
 Answer to Puzzle #34
@@ -1967,7 +2039,7 @@ DECLARE
     vRouteInsertID INTEGER := 2;
 BEGIN
     LOOP
-        -- Insert based on the last arrival
+
         WITH cte_LastArrival AS (
             SELECT 
                 RoutePath,
@@ -2552,7 +2624,7 @@ WITH cte_Lead AS
 (
 SELECT  ScheduleID,
         ActivityName,
-        ScheduleTime as StartTime,
+        ScheduleTime AS StartTime,
         LEAD(ScheduleTime) OVER (PARTITION BY ScheduleID ORDER BY ScheduleTime) AS EndTime
 FROM    ActivityCoalesce
 )
@@ -2850,7 +2922,7 @@ WITH cte_Ticket AS
 SELECT  TicketID,
         COUNT(*) AS MatchingNumbers
 FROM    LotteryTickets a INNER JOIN
-        WinningNumbers b on a."Number" = b."Number"
+        WinningNumbers b ON a."Number" = b."Number"
 GROUP BY TicketID
 ),
 cte_Payout AS
@@ -2963,7 +3035,7 @@ INSERT INTO Strings (String) VALUES
 
 WITH cte_StringSplit AS (
     SELECT 
-        ROW_NUMBER() OVER (PARTITION BY s.QuoteId ORDER BY s.QuoteId) as RowNumber,
+        ROW_NUMBER() OVER (PARTITION BY s.QuoteId ORDER BY s.QuoteId) AS RowNumber,
         s.QuoteId,
         s.String,
         w.Word,
