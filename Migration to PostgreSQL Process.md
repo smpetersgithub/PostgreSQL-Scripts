@@ -1,4 +1,6 @@
-The first steps in the migration process is to gather and analyze the following information: 
+## PostgreSQL Migration Process
+
+The first step in the migration process is to gather and analyze the following information: 
 
 | Step | Description | Overview |
 | ---- | ----------- | -------- |
@@ -16,7 +18,15 @@ The first steps in the migration process is to gather and analyze the following 
 
 -------------------
 
-GCP, AWS, and Azure all offer data migration services to facilitate the seamless transfer of data, databases, applications, and workloads to their cloud environments, providing tools and resources to ensure efficient, secure, and optimized migration processes. 
+## Cloud Database Migration Services
+
+GCP, AWS, and Azure all offer data migration services to facilitate the seamless transfer of data, databases, applications, and workloads to their cloud environments, providing tools and resources to ensure efficient, secure, and optimized migration processes.
+
+More information to come...
+
+-------------------
+
+## pgloader
 
 `pgloader` is an open-source data loading tool specifically designed for PostgreSQL, which allows for the efficient and fast migration of data from various sources into a PostgreSQL database. It is particularly known for its ability to simplify the process of migrating databases from other database systems (like MySQL, SQLite, MS SQL Server, and others) to PostgreSQL.
 
@@ -32,4 +42,22 @@ Key features and characteristics of `pgloader` include:
 6. **Command-Line Tool**: `pgloader` is a command-line utility, making it suitable for automation and use in scripts.
 
 `pgloader` is particularly popular in scenarios where a database is being moved from a different DBMS to PostgreSQL, due to its ability to manage differences in data types, schema definitions, and other database-specific characteristics.
+
+----------------------
+
+## Babelfish Compass
+
+Babelfish Compass is a standalone tool designed to assist in migrating SQL Server-based applications to Amazon Aurora PostgreSQL-Compatible Edition using Babelfish. Here's a detailed overview of the tool and its functionalities:
+
+1. **Compatibility Assessment**: Babelfish Compass evaluates the compatibility of SQL Server applications with Babelfish for Aurora PostgreSQL. This includes analyzing DDL (Data Definition Language) and SQL code and thoroughly reviewing how well an existing SQL Server application will function when migrated to Babelfish.
+
+2. **Detailed Reporting**: The tool provides a comprehensive report listing all supported and unsupported features within the SQL Server application's code. This report is crucial for understanding the changes that may be needed for successful migration.
+
+3. **Platform Availability**: Babelfish Compass is versatile in terms of platform compatibility, as it can run on Windows, Mac, and Linux systems. This makes it accessible to a wide range of users, regardless of their operating system.
+
+4. **First Step in Migration**: Using Babelfish Compass is recommended as the initial step in the process of migrating SQL Server applications to Babelfish. Analyzing the DDL and T-SQL code helps determine the extent to which the code will be supported by Babelfish and identifies areas that may require modification.
+
+5. **Facilitating Smooth Migration**: The tool plays a key role in easing the transition from SQL Server to PostgreSQL. It helps users identify potential issues in advance, streamlining the migration process and reducing the chances of encountering unexpected problems during the migration.
+
+In summary, Babelfish Compass is an essential tool for anyone looking to migrate their SQL Server applications to Babelfish for Aurora PostgreSQL. Its ability to analyze and report on compatibility issues makes it an invaluable resource in the planning and execution of such migrations.
 
