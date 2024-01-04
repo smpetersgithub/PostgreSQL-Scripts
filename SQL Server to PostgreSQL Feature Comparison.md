@@ -1,4 +1,4 @@
-Here is a growing list of various features between SQL Server and PostgreSQL.
+# Here is a growing list of various features between SQL Server and PostgreSQL.
 
 | Feature | SQL Server | PostgreSQL | Comments |
 | ------- | ---------- | ---------- | -------- |
