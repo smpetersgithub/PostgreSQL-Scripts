@@ -59,5 +59,3 @@ Babelfish Compass is a standalone tool designed to assist in migrating SQL Serve
 
 5. **Facilitating Smooth Migration**: The tool plays a key role in easing the transition from SQL Server to PostgreSQL. It helps users identify potential issues in advance, streamlining the migration process and reducing the chances of encountering unexpected problems during the migration.
 
-In summary, Babelfish Compass is an essential tool for anyone looking to migrate their SQL Server applications to Babelfish for Aurora PostgreSQL. Its ability to analyze and report on compatibility issues makes it an invaluable resource in the planning and execution of such migrations.
-
