@@ -9,4 +9,5 @@
 [Unsupported functionality in Babelfish](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/babelfish-compatibility.tsql.limitations-unsupported.html)    
 
 This appears to be the best resource for learning Babelfish.    
-(babelfish-for-aws-aurora-postgresql-hands-on-learning)[https://www.udemy.com/course/babelfish-for-aws-aurora-postgresql-hands-on-learning/]    
+
+[babelfish-for-aws-aurora-postgresql-hands-on-learning](https://www.udemy.com/course/babelfish-for-aws-aurora-postgresql-hands-on-learning/)    
