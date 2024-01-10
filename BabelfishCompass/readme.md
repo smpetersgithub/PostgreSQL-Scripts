@@ -11,6 +11,8 @@ Amazon Documentation
 
 [Unsupported functionality in Babelfish](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/babelfish-compatibility.tsql.limitations-unsupported.html)    
 
+[Client-side T-SQL assessment for SQL Server to Babelfish for Aurora PostgreSQL migration](https://aws.amazon.com/blogs/database/client-side-t-sql-assessment-for-sql-server-to-babelfish-for-aurora-postgresql-migration/)    
+
 -----
 
 Below appears to be the best resource for learning Babelfish.    
